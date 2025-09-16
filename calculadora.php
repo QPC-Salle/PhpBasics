@@ -9,7 +9,7 @@
 
 <body>
     <h1>Calculadora</h1>
-    <form action="index.php" method="post">
+    <form action="calculadora.php" method="post">
         <label for="">Numero 1</label>
         <input type="number" name="num1" placeholder="Número 1" required>
         <label for="">Numero 2</label>
