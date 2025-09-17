@@ -1,3 +1,12 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Store all form data in session and redirect to another page
+    session_start();
+    $_SESSION['form_data'] = $_POST;
+    header("Location: mostrar_matricula.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +18,7 @@
 
 <body>
     <h1>Formulari Matricula</h1>
-    <form action="matricula.php" method="post">
+    <form action="matricula.php" method="post" enctype="multipart/form-data">
         <div>
             <h2>Entra Dades Alumne</h2> <!--Entra dades alumne-->
             <label for="">Nom</label>
@@ -34,25 +43,22 @@
                 title="El DNI ha de tenir 8 números seguits d'una lletra" required>
 
         </div>
-        <div>
+
+        <div class="menors">
             <h2>Entra Dades Tutor Legal</h2>
             <!-- Entra dades Tutor legal-->
             <label for="">Nom Tutor</label>
-            <input type="text" name="nomtutor" placeholder="Nom Tutor" required <?php if (isset($_POST['edat']) && $_POST['edat'] >= 18)
-                echo "disabled"; ?>>
+            <input type="text" name="nomtutor" placeholder="Nom Tutor" required>
             <br>
             <label for="">Cognoms Tutor</label>
-            <input type="text" name="cognomstutor" placeholder="Cognoms Tutor" required <?php if (isset($_POST['edat']) && $_POST['edat'] >= 18)
-                echo "disabled"; ?>>
+            <input type="text" name="cognomstutor" placeholder="Cognoms Tutor" required>
             <br>
             <label for="">Telefon Tutor</label>
-            <input type="tel" name="telefontutor" placeholder="Telefon Tutor" required <?php if (isset($_POST['edat']) && $_POST['edat'] >= 18)
-                echo "disabled"; ?>>
+            <input type="tel" name="telefontutor" placeholder="Telefon Tutor" required>
             <br>
             <label for="">DNI</label>
             <input type="text" name="dnitutor" placeholder="DNI Tutor" pattern="[0-9]{8}[A-Za-z]{1}"
-                title="El DNI ha de tenir 8 números seguits d'una lletra" required <?php if (isset($_POST['edat']) && $_POST['edat'] >= 18)
-                    echo "disabled"; ?>>
+                title="El DNI ha de tenir 8 números seguits d'una lletra" required>
             <br>
         </div>
         <div>
@@ -69,24 +75,37 @@
             </select>
             <input type="submit" value="Matricular">
         </div>
+
     </form>
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Store all form data in session and redirect to another page
-        session_start();
-        $_SESSION['form_data'] = $_POST;
-        header("Location: mostrar_matricula.php");
-        exit();
-    }
-    ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const edatInput = document.querySelector('input[name="edat"]');
+            const menorsDiv = document.querySelector('.menors');
+            const nomtutor = document.querySelector('input[name="nomtutor"]');
+            const cognomstutor = document.querySelector('input[name="cognomstutor"]');
+            const telefontutor = document.querySelector('input[name="telefontutor"]');
+            const dnitutor = document.querySelector('input[name="dnitutor"]');
 
+            function toggleMenors() {
+                if (edatInput.value && parseInt(edatInput.value) >= 18) {
+                    menorsDiv.style.display = 'none';
+                    nomtutor.value = 'A';
+                    cognomstutor.value = 'A';
+                    telefontutor.value = 'A';
+                    dnitutor.value = '12345678A';
+                } else {
+                    menorsDiv.style.display = '';
+                    nomtutor.value = null;
+                    cognomstutor.value = null;
+                    telefontutor.value = null;
+                    dnitutor.value = null;
+                }
+            }
 
-
-
-
-
-
-
+            edatInput.addEventListener('input', toggleMenors);
+            toggleMenors();
+        });
+    </script>
 </body>
 
 </html>
